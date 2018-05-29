@@ -2,6 +2,8 @@ import 'onsenui';
 import Vue from 'vue';
 import VueOnsen from 'vue-onsenui';
 
+
+
 // Onsen UI Styling and Icons
 require('onsenui/css/onsenui.css');
 require('./assets/onsen-css-components.css')
