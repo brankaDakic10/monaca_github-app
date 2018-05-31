@@ -16,6 +16,10 @@
           <span class="list-item__title">{{repo.name}}</span>
           <span class="list-item__subtitle">{{repo.description}}</span>
            <span class="list-item__subtitle">{{repo.updated_at}}</span>
+ 
+ 
+ 
+
 
         </div>
       </v-ons-list-item>
@@ -26,7 +30,8 @@
       </div>
        
        <empty-state :type="query" v-if="!repos.length"/>
-      
+       <error />
+       <!-- v-if="" -->
      
 </div>
        
@@ -40,12 +45,14 @@ import { gitHub } from "./services/GitHub.js"
 import AppToolbar from "./components/AppToolbar.vue"
 import AppSearch from "./components/AppSearch.vue"
 import EmptyState from "./components/EmptyState.vue"
+import Error from "./components/Error.vue"
 
   export default{
    components:{
      AppToolbar,
      AppSearch,
-     EmptyState
+     EmptyState,
+     Error
     
    },
     data(){
@@ -74,6 +81,10 @@ methods: {
         })
         .catch(errors => {
           console.log(errors);
+          if(errors.response === 404){
+            this.repos =[]
+
+          }
             // this.isSearchDone = true;
         }).finally(()=>{
           this.isSearchDone = true
