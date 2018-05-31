@@ -5,8 +5,8 @@
        <div class="content">
       <app-search :query.sync="query" placeholder="Type username "
       /> 
- 
-
+ <!-- show list when the search is finished -->
+  <v-ons-list v-if="isSearchDone">
 <v-ons-list-header>Repositories of {{query}}</v-ons-list-header>
       <v-ons-list-item v-for="repo in repos" :key="repo.id" v-if="repo">
         <div class="left">
@@ -19,7 +19,12 @@
 
         </div>
       </v-ons-list-item>
-     </div>
+      </v-ons-list>
+      <!-- end -->
+      <div v-if="!isSearchDone">
+      <v-ons-progress-circular indeterminate ></v-ons-progress-circular>
+      </div>
+</div>
        
   
       
@@ -42,20 +47,20 @@ import AppSearch from "./components/AppSearch.vue"
       return{
         query:"",
         image:'',
-       isSearchDone:false,
-       
-        repos:[]
+       isSearchDone:true,
+       repos:[]
       }
     },
 methods: {
     getRepos: debounce(function () {
-         
+
+          //  this.isSearchDone = false;
        gitHub.getRepos(this.query)
         .then(response => {
            
           this.repos = response.data;
           console.log('see repos info',this.repos);
-          this.isSearchDone = true;
+          // this.isSearchDone = true;
          this.repos.forEach(repo => {
          this.image = repo.owner.avatar_url;
          });
@@ -64,14 +69,17 @@ methods: {
         })
         .catch(errors => {
           console.log(errors);
-        });
+            // this.isSearchDone = true;
+        }).finally(()=>{
+          this.isSearchDone = true
+        })
     }, 500)
   },
   watch: {
     query: function() {
-   
+    this.isSearchDone = false;
       this.getRepos()
-      this.isSearchDone = false;
+     
     }
   }
   }
