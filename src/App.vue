@@ -24,6 +24,10 @@
       <div v-if="!isSearchDone">
       <v-ons-progress-circular indeterminate ></v-ons-progress-circular>
       </div>
+       
+       <empty-state :type="query" v-if="!repos.length"/>
+      
+     
 </div>
        
   
@@ -35,12 +39,13 @@ import debounce from "lodash/debounce"
 import { gitHub } from "./services/GitHub.js"
 import AppToolbar from "./components/AppToolbar.vue"
 import AppSearch from "./components/AppSearch.vue"
-
+import EmptyState from "./components/EmptyState.vue"
 
   export default{
    components:{
      AppToolbar,
-     AppSearch
+     AppSearch,
+     EmptyState
     
    },
     data(){
