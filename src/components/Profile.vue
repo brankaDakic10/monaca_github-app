@@ -18,7 +18,15 @@
           <v-ons-list-item>Following:{{user.following}}</v-ons-list-item>
         </v-ons-list>
             </div>
-      
+
+
+      <div class="center">
+       <v-ons-search-input placeholder="Input notes here..." 
+          v-model="note">
+        </v-ons-search-input>
+             <v-ons-button modifier="small" @click="saveNotes">Save Note</v-ons-button>
+
+      </div>
     
    
     </v-ons-page>
@@ -33,11 +41,16 @@ export default {
    },
    data(){
        return{
-       user:{}
+       user:{},
+       note:""
        }
    },
    methods:{
-
+     saveNotes(){
+      localStorage.setItem('note',this.note)
+      console.log( 'Saved note ',localStorage.getItem('note'))
+      this.note=""
+     }
    },
    created(){
        gitHub.getProfile(this.username)
