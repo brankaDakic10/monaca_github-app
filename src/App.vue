@@ -1,8 +1,6 @@
 <template>
    <v-ons-navigator :page-stack="pageStack"
-   @push-page="pushPage"
-  
-   ></v-ons-navigator>
+   @push-page="pushNewPage"></v-ons-navigator>
      
 
 </template>
@@ -21,7 +19,7 @@ import Home from "./components/Home.vue"
       }
     },
 methods: {
-     pushPage(page){
+     pushNewPage(page){
     this.pageStack.push(page)
       },
 }}

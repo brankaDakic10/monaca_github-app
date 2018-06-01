@@ -45,6 +45,7 @@ import AppToolbar from "./AppToolbar.vue"
 import AppSearch from "./AppSearch.vue"
 import EmptyState from "./EmptyState.vue"
 import Error from "./Error.vue"
+import Profile from "./Profile.vue"
 
   export default{
    components:{
@@ -94,7 +95,12 @@ methods: {
     }, 500),
     // button click
     viewProfile(){
-        ////
+         this.$emit('push-page', {
+            extends: Profile,
+             onsNavigatorProps:{
+                 username:this.query
+                 }
+            })
     }
   },
   watch: {
