@@ -18,7 +18,7 @@
            <span class="list-item__subtitle">{{repo.updated_at}}</span>
  
  
- 
+          
 
 
         </div>
@@ -29,9 +29,9 @@
       <v-ons-progress-circular indeterminate ></v-ons-progress-circular>
       </div>
        
-       <empty-state :type="query" v-if="!repos.length"/>
-       <error />
-       <!-- v-if="" -->
+       <empty-state :type="query" v-if="!repos.length && !hasErrors"/>
+       <error v-if="hasErrors"/>
+      
      
 </div>
        
@@ -59,13 +59,14 @@ import Error from "./components/Error.vue"
       return{
         query:"",
         image:'',
+        hasErrors:false,
        isSearchDone:true,
        repos:[]
       }
     },
 methods: {
     getRepos: debounce(function () {
-
+         this.hasErrors=false
           //  this.isSearchDone = false;
        gitHub.getRepos(this.query)
         .then(response => {
@@ -80,9 +81,11 @@ methods: {
           
         })
         .catch(errors => {
-          console.log(errors);
-          if(errors.response === 404){
-            this.repos =[]
+          console.log('see errors',errors.response);
+          if(errors.response.status === 404){
+             console.log('see repos in errors',this.repos);
+          this.hasErrors=true
+            // this.repos =[]
 
           }
             // this.isSearchDone = true;
@@ -94,7 +97,7 @@ methods: {
   watch: {
     query: function() {
     this.isSearchDone = false;
-      this.getRepos()
+      this.getRepos() 
      
     }
   }
